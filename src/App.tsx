@@ -2,10 +2,11 @@ import './App.css'
 import { useState } from 'react'
 
 function App() {
+
     function inputDigit(digit: string) {
       if(startNewNumber && !operator) {
           setDisplay(digit)
-          setPreviousOperation(null)
+          setPreviousOperation('')
           setFirstNumber(null)
           setStartNewNumber(false)
       } else if (display === '0') {
@@ -21,48 +22,117 @@ function App() {
         }
     }
 
+    function performCalculation(num1: number, num2: number, op: string): number {
+        switch(op) {
+            case '+':
+                return num1 + num2
+            case '-':
+                return num1 - num2
+            case 'x':
+                return num1 * num2
+            case '÷':
+                return num1 / num2
+            default:
+                return num2
+        }
+    }
+
+    function toggleSign() {
+        setDisplay(String(Number(display)*-1))
+    }
+
+    function handlePercentage() {
+        if (!isPercentage) {
+            setPreviousOperation(
+                operator != null
+                    ? previousOperation + ' ' + display + '%'
+                    : display + '%'
+            )
+            setIsPercentage(true)
+        }
+    }
+
     function chooseOperator(currentOperator: string) {
+        if (operator != null && firstNumber != null) {
+            let secondNumber = Number(display)
+
+            if (isPercentage) {
+                if (operator == '+' || operator == '-') {
+                    secondNumber = (firstNumber * 0.01) * secondNumber
+                } else {
+                    secondNumber = secondNumber * 0.01
+                }
+            }
+
+            const result = performCalculation(firstNumber, secondNumber, operator)
+
+            setDisplay(String(Number(result.toFixed(10))))
+            setFirstNumber(result)
+            setPreviousOperation(String(result) + ' ' + currentOperator)
+        } else {
+            setFirstNumber(Number(display))
+            setPreviousOperation(display + ' ' + currentOperator)
+        }
+
         setOperator(currentOperator)
-        setFirstNumber(Number(display))
-        setPreviousOperation(display + ' ' + currentOperator)
+        setIsPercentage(false)
         setDisplay('0')
         setStartNewNumber(false)
     }
 
     function calculate() {
-        if(operator != null && firstNumber != null) {
-                setPreviousOperation(previousOperation + ' ' + display)
-                let result: number
+        let result: number
+        let secondNumber: number = Number(display)
+
+        if(operator == null && isPercentage) {
+            result = secondNumber * 0.01
+        }
+        else if(operator != null && firstNumber != null) {
+                if(!isPercentage) {
+                    setPreviousOperation(previousOperation + ' ' + display)
+                }
+
+                if(isPercentage) {
+                    if(operator == '+' || operator == '-') {
+                        secondNumber = (firstNumber * 0.01) * secondNumber
+                    } else {
+                        secondNumber = secondNumber * 0.01
+                    }
+                }
 
                 switch(operator) {
                     case '+':
-                        result = firstNumber + Number(display)
+                        result = firstNumber + secondNumber
                         break
                     case '-':
-                        result = firstNumber - Number(display)
+                        result = firstNumber - secondNumber
                         break
                     case 'x':
-                        result = firstNumber * Number(display)
+                        result = firstNumber * secondNumber
                         break
                     case '÷':
-                        result = firstNumber / Number(display)
+                        result = firstNumber / secondNumber
                         break
                 }
-                setDisplay(String(result))
-                setOperator(null)
-                setStartNewNumber(true)
         }
+        setDisplay(String(Number(result.toFixed(10))))
+        setOperator(null)
+        setIsPercentage(false)
+        setStartNewNumber(true)
     }
     const [display, setDisplay] = useState('0')
     const [firstNumber, setFirstNumber] = useState<number | null>(null)
     const [operator, setOperator] = useState<string | null>(null)
     const [previousOperation, setPreviousOperation] = useState('')
     const [startNewNumber, setStartNewNumber] = useState(false)
+    const [isPercentage, setIsPercentage] = useState(false)
 return (
 <main className="calculator">
 <div className="display">
 <div className="previous-operation">{previousOperation} </div>
-<div className="current-value">{display}</div>
+<div className="current-value">
+    {isPercentage ? display + '%' : display}
+</div>
 </div>
 
   <div className="buttons">
@@ -74,12 +144,13 @@ return (
             setFirstNumber(null)
             setOperator(null)
             setStartNewNumber(false)
+            setIsPercentage(false)
         }}
     >
         AC
     </button>
-    <button className="utility">±</button>
-    <button className="utility">%</button>
+    <button className="utility" onClick={() => toggleSign()}>±</button>
+    <button className="utility" onClick={() => handlePercentage()}>%</button>
     <button className="operator" onClick={() => chooseOperator('÷')}>÷</button>
 
     <button onClick={() => inputDigit('7')}>7</button>
