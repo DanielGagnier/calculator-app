@@ -1,75 +1,86 @@
-# React + TypeScript + Vite
+# Calculator App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A graphical calculator built with React, TypeScript, and CSS. This project was created to practice frontend development, learn React fundamentals, and gain hands-on experience with TypeScript.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Basic arithmetic: addition, subtraction, multiplication, and division
+- PEMDAS order of operations
+- Percentage calculations
+- Decimal number support
+- Positive/negative number toggle
+- Clear/reset functionality
+- Interactive calculator-style graphical interface
 
-## React Compiler
+## Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **TypeScript** – Application logic, type definitions, and data handling
+- **React** – Building the user interface and managing application state
+- **HTML / JSX (TSX)** – Structuring the calculator interface
+- **CSS** – Styling the calculator layout and buttons
+- **Vite** – Development server and build tooling
 
-## Expanding the ESLint configuration
+## Concepts and Techniques
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React functional components
+- React `useState` hook for managing application state
+- React event handling with `onClick`
+- JSX and conditional rendering
+- TypeScript type annotations, union types, and custom type definitions
+- JavaScript arrays, objects, loops, and functions
+- Array methods such as `map()`, `slice()`, and `splice()`
+- Spread syntax for updating arrays
+- Two-pass calculation algorithm to implement PEMDAS
+- Breaking application logic into smaller, reusable functions
+- Debugging and testing application functionality
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- [Node.js](https://nodejs.org/) installed
+- npm (included with Node.js)
 
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/DanielGagnier/calculator-app.git
+   ```
+
+2. Navigate into the project directory:
+
+   ```bash
+   cd calculator-app
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+
+Start the Vite development server:
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Open the local URL displayed in the terminal, usually:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+`http://localhost:5173`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Building for Production
 
+To create a production build:
+
+```bash
+npm run build
 ```
+
+## Purpose
+
+This project was built as a hands-on learning experience to develop familiarity with React and TypeScript. It provided practical experience with frontend application structure, state management, event handling, and implementing calculation algorithms in a graphical interface.
